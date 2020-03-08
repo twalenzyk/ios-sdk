@@ -1,6 +1,8 @@
 import UIKit
 import StoreKit
 
+import os.log
+
 class ViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var trackNameLabel: UILabel!
@@ -27,7 +29,8 @@ class ViewController: UIViewController {
 
     // MARK: - Variables
     private let playURI = "spotify:album:1htHMnxonxmyHdKE2uDFMR"
-    private let trackIdentifier = "spotify:track:32ftxJzxMPgUFCM6Km9WTS"
+    private var playlistURI = "spotify:playlist:4biL66nlmOIxf0nqMkQte8"
+    private let trackIdentifier = "spotify:track:0mtyHWSEUgjCNhzL9KqS2I"
     private let name = "Now Playing View"
 
     private var currentPodcastSpeed: SPTAppRemotePodcastPlaybackSpeed?
@@ -45,6 +48,9 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    
+    
 
     var appRemote: SPTAppRemote? {
         get {
@@ -209,6 +215,17 @@ class ViewController: UIViewController {
     
     private func playTrack() {
         appRemote?.playerAPI?.play(trackIdentifier, callback: defaultCallback)
+    }
+
+    private func playList() {
+        appRemote?.playerAPI?.play(playlistURI, callback: defaultCallback)
+        appRemote?.playerAPI?.seek(toPosition: 120, callback: defaultCallback)
+    
+    }
+
+    
+    private func getPlayLists() {
+        appRemote?.playerAPI?.play(playlistURI, callback: defaultCallback)
     }
 
     private func enqueueTrack() {
@@ -439,13 +456,26 @@ class ViewController: UIViewController {
             appRemote?.playerAPI?.getPlayerState({ result, error in
                 if let currentTrack = (result as? SPTAppRemotePlayerState)?.track.uri {
                     trackUri = currentTrack
+                    NSLog("playRadioTapped. CurrentTrack = %s", currentTrack)
                 }
 
                 self.appRemote?.playerAPI?.play(trackUri, asRadio: true, callback: self.defaultCallback)
             })
         }
+        print("playRadioTapped. ")
     }
 
+    @IBAction func playlistTapped(_ sender: Any) {
+        print("playlistTapped ")
+        playList()
+        print("playlistTapped ended")
+    }
+   
+    @IBAction func getPlaylistsTapped(_ sender: Any) {
+        print("getPlaylistsTapped ")
+        getPlayLists()
+        print("getPlaylistsTapped ended")
+    }
 }
 
 // MARK: - SpeedPickerViewControllerDelegate
@@ -507,4 +537,8 @@ extension ViewController: SKStoreProductViewControllerDelegate {
     public func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
         viewController.dismiss(animated: true, completion: nil)
     }
+    
+    
+    
+    
 }

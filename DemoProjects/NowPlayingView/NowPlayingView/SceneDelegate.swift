@@ -4,8 +4,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate,
 SPTAppRemoteDelegate {
 
     static private let kAccessTokenKey = "access-token-key"
-    private let redirectUri = URL(string:"comspotifytestsdk://")!
-    private let clientIdentifier = "089d841ccc194c10a77afad9e1c11d54"
+//    private let redirectUri = URL(string:"comspotifytestsdk://")!
+    private let redirectUri = URL(string:"spotify-demo://")!
+    private let clientIdentifier = "027b89500aa14363b95917ce82f65b0b"
 
     var window: UIWindow?
 
